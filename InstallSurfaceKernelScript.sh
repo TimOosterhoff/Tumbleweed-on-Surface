@@ -11,6 +11,10 @@ fi
 
 if [ $(dmidecode -s system-family) == "Surface" ]; then
 
+	# Disable repo(s) on USB
+	echo "Disable repo(s) on USB"
+	zypper mr  --disable  $(zypper repos --uri | grep -e device | awk '{print $1}')
+
 	# Install Surface kernel on top of openSUSE Tumbleweed
 	
 	# Set install lock on standard kernel
