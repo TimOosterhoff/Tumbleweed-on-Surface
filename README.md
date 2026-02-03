@@ -4,7 +4,7 @@ For de Surface kernel all credits to https://download.opensuse.org/download/repo
 
 ***All needed requirements, actions, cleanups and settings are included:***
 - Check on root rights and Surface hardware
-- After last boot no sleep-mode should be happened (not ready yet)
+- After last boot no sleep-mode should be happened
 - Disable repo(s) on a USB-stick
 - Adding Surface kernel repo
 - Setting lock on future install/upgrade of the default openSUSE kernel
