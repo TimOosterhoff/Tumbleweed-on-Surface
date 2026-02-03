@@ -9,6 +9,12 @@ if [[ $EUID -ne 0 ]]; then
     exit 99
 fi
 
+# No sleep mode after last boot	
+if [[ $(journalctl -b | grep sleep | wc -l) -ne 0 ]]; then
+	echo "Laptop has slept, reboot first"
+	exit 99
+fi
+
 if [ $(dmidecode -s system-family) == "Surface" ]; then
 
 	# Disable repo(s) on USB
