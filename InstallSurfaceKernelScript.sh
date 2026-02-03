@@ -3,7 +3,7 @@
 # Install script for Tumbleweed on a Surface laptop
 # Kernel used from repo MadZero. Thanks!
 
-# 1-st: install Tumbleweed and reboot
+# 1-st: install recent Tumbleweed including default online repos and reboot
 # 2-sec: (before first hybernation(!) execute this script
 
 if [ $(dmidecode -s system-family) == "Surface" ]; then
