@@ -3,8 +3,11 @@
 # Install script for Tumbleweed on a Surface laptop
 # Kernel used from repo MadZero. Thanks!
 
-# 1-st: install recent Tumbleweed including default online repos and reboot
-# 2-sec: (before first hybernation(!) execute this script as root
+# root rights?
+if [[ $EUID -ne 0 ]]; then
+    echo "Root privileges are required to run this script" 1>&2
+    exit 99
+fi
 
 if [ $(dmidecode -s system-family) == "Surface" ]; then
 
