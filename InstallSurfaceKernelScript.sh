@@ -59,5 +59,8 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	# Delete default kernel.conf(s)
 	rm /boot/efi/loader/entries/system-opensuse-tumbleweed*
 
+	echo
+	echo "Reboot needed"
+
 fi # if Surface
 
