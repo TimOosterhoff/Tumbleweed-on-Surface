@@ -4,7 +4,7 @@
 # Kernel used from repo MadZero. Thanks!
 
 # 1-st: install recent Tumbleweed including default online repos and reboot
-# 2-sec: (before first hybernation(!) execute this script
+# 2-sec: (before first hybernation(!) execute this script as root
 
 if [ $(dmidecode -s system-family) == "Surface" ]; then
 
