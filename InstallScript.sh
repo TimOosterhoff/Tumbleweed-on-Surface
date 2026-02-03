@@ -27,7 +27,7 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	echo "Surface kernel installed"
 	echo
 
-	# Installl Intel Precise Touch & Stylus daemon
+	# Install Intel Precise Touch & Stylus daemon
 	echo "Install Intel Precise Touch & Stylus daemon ..."
 	zypper --quiet --non-interactive --no-gpg-checks install iptsd
 	echo "Intel Precise Touch & Stylus daemon installed"
