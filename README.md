@@ -15,7 +15,7 @@ For de Surface kernel all credits to https://download.opensuse.org/download/repo
 
 
 ***Installation and execution***
-- Download the file InstallSurfaceKernel.sh
+- Download the file **InstallSurfaceKernel.sh**
 - Go to the download folder
-- Make file executable: chmod a+x InstallSurfaceKernel.sh
-- Execute file: ./InstallSurfaceKernel.sh
+- Make file executable: **chmod a+x InstallSurfaceKernel.sh**
+- Execute file: **./InstallSurfaceKernel.sh**
