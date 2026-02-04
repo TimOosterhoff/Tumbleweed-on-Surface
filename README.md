@@ -13,7 +13,8 @@ For de Surface kernel all credits to https://download.opensuse.org/download/repo
 - Handles all the GRUB2-BLS stuff
 
 
-- ***Installation and execution***
+
+***Installation and execution***
 - Download the file InstallSurfaceKernel.sh
 - Go to the download folder
 - Make file executable: chmod a+x InstallSurfaceKernel.sh
