@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# Tumbleweed-on-Surface
-# Install script for Tumbleweed on a Surface laptop
-# Kernel used from repo MadZero. Thanks!
+# Install Surface aware kernel on Tumbleweed on a Surface laptop
+# Kernel used from repo MadZero. Thanks !!
 
 clear -x
-echo "Running script: $0"; echo
+echo "$(date '+%Y-%m-%d %H:%M:%S') Starting script: $0"; echo
 
 # Running on supported os $NAME?
 SupportedOsNames='openSUSE Tumbleweed|AnotherBarDelimitedOsName'
@@ -13,6 +12,11 @@ source /etc/os-release && [[ ! "|$SupportedOsNames|" =~ "|$NAME|" ]] && { echo "
 
 # root privileges?
 [[ $EUID -ne 0 ]] && { echo "This script requires root privileges"; exit 99; }
+
+# Site available?
+site="download.opensuse.org"
+ping -c1 "$site" > /dev/null 2>&1
+[ $? -gt 0 ] && { echo "Site $site not available"; exit 99; }
 
 # No sleep mode after last boot	
 [[ $(journalctl -b -gsleep -q) ]] && { echo "Laptop has slept after last reboot, reboot first"; exit 99; }
@@ -62,7 +66,7 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	rm /boot/efi/loader/entries/system-opensuse-tumbleweed*
 
 	echo
-	echo "Reboot needed"
+	echo "Script finished, reboot needed"
 
 fi # if Surface
 
