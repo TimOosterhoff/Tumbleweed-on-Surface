@@ -7,11 +7,14 @@
 clear -x
 echo "Running script: $0"; echo
 
+# Running on 'openSUSE Tumbleweed'?
+source /etc/os-release &&  [ ! "$NAME" = "openSUSE Tumbleweed" ] && { echo "Script designed/tested on 'openSUSE Tumbleweed'"; exit 99; }
+
 # root privileges?
-[[ $EUID -ne 0 ]] && echo "This script requires root privileges"; exit 99
+[[ $EUID -ne 0 ]] && { echo "This script requires root privileges"; exit 99; }
 
 # No sleep mode after last boot	
-[[ $(journalctl -b -gsleep -q) ]] && echo "Laptop has slept after last reboot, reboot first"; exit 99
+[[ $(journalctl -b -gsleep -q) ]] && { echo "Laptop has slept after last reboot, reboot first"; exit 99; }
 
 if [ $(dmidecode -s system-family) == "Surface" ]; then
 
