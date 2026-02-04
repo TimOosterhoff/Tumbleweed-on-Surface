@@ -9,7 +9,7 @@ echo "Running script: $0"; echo
 
 # Running on supported os $NAME?
 SupportedOsNames='openSUSE Tumbleweed|AnotherBarDelimitedOsName'
-source /etc/os-release && [[ "|$SupportedOsNames|" =~ "|$NAME|" ]] && { echo "Script not designed/tested on $NAME"; exit 99; }
+source /etc/os-release && [[ ! "|$SupportedOsNames|" =~ "|$NAME|" ]] && { echo "Script not designed/tested on $NAME"; exit 99; }
 
 # root privileges?
 [[ $EUID -ne 0 ]] && { echo "This script requires root privileges"; exit 99; }
