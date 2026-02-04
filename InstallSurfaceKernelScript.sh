@@ -8,7 +8,7 @@ clear -x
 echo "Running script: $0"; echo
 
 # Running on supported os $NAME?
-SupportedOsNames=' openSUSE Tumbleweed AnotherSpaceAroundedOsName '
+SupportedOsNames='openSUSE Tumbleweed AnotherSpaceDelimitedOsName'
 source /etc/os-release && [[ ! " $SupportedOsNames " =~ " $NAME " ]] && { echo "Script not designed/tested on $NAME"; exit 99; }
 
 # root privileges?
