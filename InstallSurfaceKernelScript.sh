@@ -1,19 +1,18 @@
-# Tumbleweed-on-Surface
+#!/bin/bash
 
-# Install script for Tumbleweed on a Surface laptop
+# Tumbleweed-on-Surface
+# Install script  for Tumbleweed on a Surface laptop
 # Kernel used from repo MadZero. Thanks!
 
+clear -x
+echo "Running script: $(basename "$0")"
+echo
+
 # root rights?
-if [[ $EUID -ne 0 ]]; then
-    echo "Root privileges are required to run this script" 1>&2
-    exit 99
-fi
+[[ $EUID -ne 0 ]] && echo "This script requires root privileges"; exit 99
 
 # No sleep mode after last boot	
-if [[ $(journalctl -b | grep sleep | wc -l) -ne 0 ]]; then
-	echo "Laptop has slept, reboot first"
-	exit 99
-fi
+[[ $(journalctl -b -gsleep -q) ]] && echo "Laptop has slept after last reboot, reboot first"; exit 99
 
 if [ $(dmidecode -s system-family) == "Surface" ]; then
 
