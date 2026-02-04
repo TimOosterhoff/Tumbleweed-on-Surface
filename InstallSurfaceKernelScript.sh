@@ -5,8 +5,7 @@
 # Kernel used from repo MadZero. Thanks!
 
 clear -x
-echo "Running script: $(basename "$0")"
-echo
+echo "Running script: $0"; echo
 
 # root rights?
 [[ $EUID -ne 0 ]] && echo "This script requires root privileges"; exit 99
