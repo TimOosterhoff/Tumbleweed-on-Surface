@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Tumbleweed-on-Surface
-# Install script  for Tumbleweed on a Surface laptop
+# Install script for Tumbleweed on a Surface laptop
 # Kernel used from repo MadZero. Thanks!
 
 clear -x
 echo "Running script: $0"; echo
 
 # Running on 'openSUSE Tumbleweed'?
-source /etc/os-release &&  [ ! "$NAME" = "openSUSE Tumbleweed" ] && { echo "Script designed/tested on 'openSUSE Tumbleweed'"; exit 99; }
+source /etc/os-release && [ ! "$NAME" = "openSUSE Tumbleweed" ] && { echo "Script not designed/tested on $NAME"; exit 99; }
 
 # root privileges?
 [[ $EUID -ne 0 ]] && { echo "This script requires root privileges"; exit 99; }
@@ -20,7 +20,7 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 
 	# Disable repo(s) on USB
 	echo "Disable repo(s) on USB"
-	zypper mr  --disable  $(zypper repos --uri | grep -e device | awk '{print $1}')
+	zypper mr --disable $(zypper repos --uri | grep -e device | awk '{print $1}')
 
 	# Install Surface kernel on top of openSUSE Tumbleweed
 	
@@ -32,7 +32,7 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	sed -i 's/^\(opensuse-tumbleweed\)$/\surface-kernel/' /etc/kernel/entry-token
 	
 	# Add repo MadZero
-	zypper --non-interactive --gpg-auto-import-keys addrepo --no-gpgcheck  --refresh -r https://download.opensuse.org/download/repositories/home:/MadZero:/Surface/openSUSE_Tumbleweed/home:MadZero:Surface.repo
+	zypper --non-interactive --gpg-auto-import-keys addrepo --no-gpgcheck --refresh -r https://download.opensuse.org/download/repositories/home:/MadZero:/Surface/openSUSE_Tumbleweed/home:MadZero:Surface.repo
 	zypper refresh
 	
 	kernelMadZero=$(zypper lr | grep MadZero | cut -d'|' -f1 | xargs)
@@ -52,9 +52,9 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	# Set default boot entry
 
 	# Look for unique signature of the Surface kernel
-	entrySubstring=$(zypper se --details --type package --repo $kernelMadZero --match-exact kernel-default | grep kernel-default | cut -d'|' -f4  | grep -o '[^.]*$')
+	entrySubstring=$(zypper se --details --type package --repo $kernelMadZero --match-exact kernel-default | grep kernel-default | cut -d'|' -f4 | grep -o '[^.]*$')
 	# Look for the regarding entry file in /boot/efi/loader/entries
-	entryDefaultFile=$(ls /boot/efi/loader/entries  | grep system | grep $entrySubstring | tail -1)
+	entryDefaultFile=$(ls /boot/efi/loader/entries | grep system | grep $entrySubstring | tail -1)
 	bootctl set-default $entryDefaultFile
 
 	# Delete default kernel.conf(s)
