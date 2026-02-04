@@ -62,11 +62,11 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	entryDefaultFile=$(ls /boot/efi/loader/entries | grep system | grep $entrySubstring | tail -1)
 	bootctl set-default $entryDefaultFile
 
-	# Delete default kernel.conf(s)
+	# Delete, if exists, default kernel.conf(s)
 	rm /boot/efi/loader/entries/system-opensuse-tumbleweed*
 
 	echo
-	echo "Script finished, reboot needed"
+	echo "$(date '+%Y-%m-%d %H:%M:%S') Script finished, reboot needed"
 
 fi # if Surface
 
