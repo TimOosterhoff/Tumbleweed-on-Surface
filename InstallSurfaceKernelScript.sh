@@ -7,8 +7,9 @@
 clear -x
 echo "Running script: $0"; echo
 
-# Running on 'openSUSE Tumbleweed'?
-source /etc/os-release && [ ! "$NAME" = "openSUSE Tumbleweed" ] && { echo "Script not designed/tested on $NAME"; exit 99; }
+# Running on supported OS $NAME?
+SupportedOsNames=' openSUSE Tumbleweed AnotherSpaceAroundedOsName '
+source /etc/os-release && [[ ! " $SupportedOsNames " =~ " $NAME " ]] && { echo "Script not designed/tested on $NAME"; exit 99; }
 
 # root privileges?
 [[ $EUID -ne 0 ]] && { echo "This script requires root privileges"; exit 99; }
