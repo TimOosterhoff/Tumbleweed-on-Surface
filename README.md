@@ -12,11 +12,15 @@ For de Surface kernel all credits to https://download.opensuse.org/download/repo
 - Install Intel Precise Touch & Stylus daemon
 - Handles all the GRUB2-BLS stuff
 
-
-
 ***Installation and execution***
 - Download the file **InstallSurfaceKernel.sh**
 - Open a Terminal
 - Go to the download folder: **cd** < path download folder >
 - Make file executable: **chmod a+x InstallSurfaceKernel.sh**
 - Execute file with root permission: **./InstallSurfaceKernel.sh**
+
+***Nice to haves***
+- MOK management, links to documentation
+- In case of btrfs: cleaning intermediate snapshots
+- ... (let me know) ...
+
