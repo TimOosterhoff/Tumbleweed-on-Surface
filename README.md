@@ -22,5 +22,5 @@ For de Surface kernel all credits to https://download.opensuse.org/download/repo
 ***Nice to haves***
 - MOK management, links to documentation
 - In case of btrfs: cleaning intermediate snapshots
-- ... (let me know) ...
+- ... *(let me know)* ...
 
