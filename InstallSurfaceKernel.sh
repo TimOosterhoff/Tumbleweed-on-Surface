@@ -8,9 +8,11 @@
 clear -x
 echo "$(date '+%Y-%m-%d %H:%M:%S') Starting script: $0"; echo
 
-# Running on supported os $NAME?
+# Running on supported os $NAME and $VERSION_ID?
 SupportedOsNames='openSUSE Tumbleweed|AnotherBarDelimitedOsName'
-source /etc/os-release && [[ ! "|$SupportedOsNames|" =~ "|$NAME|" ]] && { echo "Script not designed/tested on $NAME"; exit 99; }
+source /etc/os-release
+[[ ! "|$SupportedOsNames|" =~ "|$NAME|" ]] && { echo "Script not designed/tested on $NAME"; exit 99; }
+[[ ! "$VERSION_ID" < "20251130" ]] && { echo "Script not designed/tested on Tumbleweed version before 2025-11-30"; exit 99; }
 
 # root privileges?
 [[ $EUID -ne 0 ]] && { echo "This script requires root privileges"; exit 99; }
