@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Working on v0.1.1
+
 # Install Surface aware kernel on Tumbleweed on a Surface laptop
 # Kernel used from repo MadZero. Thanks !!
 
@@ -63,8 +65,20 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	bootctl set-default $entryDefaultFile
 
 	# Delete, if exists, default kernel.conf(s)
-	rm /boot/efi/loader/entries/system-opensuse-tumbleweed*
+	Path="/boot/efi/loader/entries/"
+	FileNameRegex="system-opensuse-tumbleweed.*"
+	TempLog="/tmp/CleanUp $(date '+%Y-%m-%d %H:%M:%S').log"
+	
+	echo "Cleanup old files in $Path ..."
+	find "$Path" -type f -regex "$FileNameRegex" | tee "$TempLog"
+	
+	if [[ $(find "$TempLog" -size +0) ]]; then
+		awk -v q='"' '$0="rm -r " q $0 q' "$TempLog" | sh
+		[ $? -gt 0 ] && echo "Cleanup old files did not work"
+	fi
+	echo "Cleanup finished"
 
+	
 	echo
 	echo "$(date '+%Y-%m-%d %H:%M:%S') Script finished, reboot needed"
 
