@@ -9,7 +9,6 @@ clear -x
 echo "$(date '+%Y-%m-%d %H:%M:%S') Starting script: $0"; echo
 
 # Running on supported os $NAME and $VERSION_ID?
-SupportedOsNames='openSUSE Tumbleweed|AnotherBarDelimitedOsName'
 source /etc/os-release
 case $NAME in
 	"openSUSE Tumbleweed" )
@@ -20,6 +19,7 @@ case $NAME in
 		exit 99
 		;;
 esac
+
 # root privileges?
 [[ $EUID -ne 0 ]] && { echo "This script requires root privileges"; exit 99; }
 
