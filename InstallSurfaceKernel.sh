@@ -13,7 +13,7 @@ SECONDS=0
 source /etc/os-release
 case $NAME in
 	"openSUSE Tumbleweed" )
-		[[  "$VERSION_ID" > "20251201" ]] && { echo "Script not designed/tested on $NAME version before 2025-12-01"; exit 99; }
+		[[ ! "$VERSION_ID" > "20251201" ]] && { echo "Script not designed/tested on $NAME version before 2025-12-01"; exit 99; }
 		;;
 	* )
 		echo "Script not designed/tested on $NAME"
