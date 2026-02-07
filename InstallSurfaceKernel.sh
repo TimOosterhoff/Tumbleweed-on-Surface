@@ -11,9 +11,15 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') Starting script: $0"; echo
 # Running on supported os $NAME and $VERSION_ID?
 SupportedOsNames='openSUSE Tumbleweed|AnotherBarDelimitedOsName'
 source /etc/os-release
-[[ ! "|$SupportedOsNames|" =~ "|$NAME|" ]] && { echo "Script not designed/tested on $NAME"; exit 99; }
-[[ ! "$VERSION_ID" < "20251130" ]] && { echo "Script not designed/tested on Tumbleweed version before 2025-11-30"; exit 99; }
-
+case $NAME in
+	"openSUSE Tumbleweed" )
+		[[  "$VERSION_ID" > "20251201" ]] && { echo "Script not designed/tested on $NAME version before 2025-12-01"; exit 99; }
+		;;
+	* )
+		echo "Script not designed/tested on $NAME"
+		exit 99
+		;;
+esac
 # root privileges?
 [[ $EUID -ne 0 ]] && { echo "This script requires root privileges"; exit 99; }
 
