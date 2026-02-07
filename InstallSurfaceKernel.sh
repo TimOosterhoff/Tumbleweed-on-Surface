@@ -85,7 +85,7 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 		awk -v q='"' '$0="rm -r " q $0 q' "$TempLog" | sh
 		[ $? -gt 0 ] && echo "Cleanup old files did not work"
 	fi
-	echo "Cleanup $( wc -l "$TempLog") files finished"
+	echo "Cleanup $( wc -l < "$TempLog") files finished"
 
 	
 	echo
