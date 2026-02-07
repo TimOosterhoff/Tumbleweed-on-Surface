@@ -7,6 +7,7 @@
 
 clear -x
 echo "$(date '+%Y-%m-%d %H:%M:%S') Starting script: $0"; echo
+SECONDS=0
 
 # Running on supported os $NAME and $VERSION_ID?
 source /etc/os-release
@@ -84,11 +85,11 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 		awk -v q='"' '$0="rm -r " q $0 q' "$TempLog" | sh
 		[ $? -gt 0 ] && echo "Cleanup old files did not work"
 	fi
-	echo "Cleanup finished"
+	echo "Cleanup $( wc -l "$TempLog") files finished"
 
 	
 	echo
-	echo "$(date '+%Y-%m-%d %H:%M:%S') Script finished, reboot needed"
+	echo "$(date '+%Y-%m-%d %H:%M:%S') Script finished (duration: $(TZ=UTC0 printf '%(%H:%M:%S)T\n' $SECONDS)), reboot needed"
 
 fi # if Surface
 
