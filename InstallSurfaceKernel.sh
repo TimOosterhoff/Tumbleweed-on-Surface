@@ -87,10 +87,9 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	fi
 	echo "Cleanup $( wc -l < "$TempLog") files finished"
 	rm "$TempLog"
-
 	
 	echo
-	echo "$(date '+%Y-%m-%d %H:%M:%S') Script finished (duration: $(TZ=UTC0 printf '%(%H:%M:%S)T\n' $SECONDS)), reboot needed"
+	echo "$(date '+%Y-%m-%d %H:%M:%S') Script $0 finished (duration: $(TZ=UTC0 printf '%(%H:%M:%S)T\n' $SECONDS)), reboot needed"
 
 fi # if Surface
 
