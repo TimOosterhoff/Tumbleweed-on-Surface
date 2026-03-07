@@ -48,7 +48,7 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	sed -i 's/^\(opensuse-tumbleweed\)$/\surface-kernel/' /etc/kernel/entry-token
 	
 	# Add repo MadZero
-	zypper --non-interactive --gpg-auto-import-keys addrepo --no-gpgcheck --refresh -r https://download.opensuse.org/download/repositories/home:/MadZero:/Surface/openSUSE_Tumbleweed/home:MadZero:Surface.repo
+	zypper --non-interactive --gpg-auto-import-keys addrepo --no-gpgcheck --refresh -r https://download.opensuse.org/download/repositories/home:/MadZero:/Surface/openSUSE_Tumbleweed/home:MadZero:Surface.repo --priority 60
 	zypper refresh
 	
 	kernelMadZero=$(zypper lr | grep MadZero | cut -d'|' -f1 | xargs)
