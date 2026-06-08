@@ -44,7 +44,7 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	echo "Surface detected, set lock on standard kernel-default*"
 	zypper al --type package --repo download.opensuse.org-oss --comment "Microsoft Surface laptop" kernel-default*
 
-	# Edit /etc/kernel/entry-token 
+	# Edit /etc/kernel/entry-token
 	sed -i 's/^\(opensuse-tumbleweed\)$/\surface-kernel/' /etc/kernel/entry-token
 	
 	# Add repo MadZero
@@ -70,23 +70,11 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	# Look for unique signature of the Surface kernel
 	entrySubstring=$(zypper se --details --type package --repo $kernelMadZero --match-exact kernel-default | grep kernel-default | cut -d'|' -f4 | grep -o '[^.]*$')
 	# Look for the regarding entry file in /boot/efi/loader/entries
-	entryDefaultFile=$(ls /boot/efi/loader/entries | grep system | grep $entrySubstring | tail -1)
+	entryDefaultFile=$(ls /boot/efi/loader/entries -1S | grep $entrySubstring | tail -1)
 	bootctl set-default $entryDefaultFile
 
 	# Delete, if exists, default kernel.conf(s)
-	Path="/boot/efi/loader/entries/"
-	FileNameRegex="system-opensuse-tumbleweed.*"
-	TempLog="/tmp/CleanUp $(date '+%Y-%m-%d %H:%M:%S').log"
-	
-	echo "Cleanup old files in $Path ..."
-	find "$Path" -type f -regex "$FileNameRegex" | tee "$TempLog"
-	
-	if [[ $(find "$TempLog" -size +0) ]]; then
-		awk -v q='"' '$0="rm -r " q $0 q' "$TempLog" | sh
-		[ $? -gt 0 ] && echo "Cleanup old files did not work"
-	fi
-	echo "Cleanup $( wc -l < "$TempLog") files finished"
-	rm "$TempLog"
+    rm /boot/efi/loader/entries/opensuse-tumbleweed*
 	
 	echo
 	echo "$(date '+%Y-%m-%d %H:%M:%S') Script $0 finished (duration: $(TZ=UTC0 printf '%(%H:%M:%S)T\n' $SECONDS)), reboot needed"
