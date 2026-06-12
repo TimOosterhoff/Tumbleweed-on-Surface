@@ -10,7 +10,7 @@ For de Surface kernel all credits to https://download.opensuse.org/download/repo
 - Setting lock on future install/upgrade of the default openSUSE kernel
 - Install Surface kernel ... ofcourse
 - Install Intel Precise Touch & Stylus daemon
-- Handles all the GRUB2-BLS stuff
+- Handles all the bootmenu stuff
 
 ***Installation and execution***
 - Download the file **InstallSurfaceKernel.sh**
