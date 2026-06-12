@@ -28,7 +28,7 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 
 	# Set default boot entry
 	
-	# Isolate the Git-hash (for insiance 'g1533bda')
+	# Isolate the Git-hash (for instance 'g1533bda')
 	Git_Hash=$(rpm -q --qf "%{RELEASE}\n" kernel-default | grep -oE 'g[0-9a-f]+')
 	
 	# Search in bootctl list for the ID which contains these hash ánd '-1.conf'
