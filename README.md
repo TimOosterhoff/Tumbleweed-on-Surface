@@ -3,9 +3,9 @@
 For de Surface kernel all credits to https://download.opensuse.org/download/repositories/home:/MadZero:
 
 ***All needed requirements, actions, cleanups and settings are included:***
-- Check on root rights and Surface hardware
-- After last boot no sleep-mode should be happened
-- Disable repo(s) on a device (USB-stick)
+- to be done: Check on root rights and Surface hardware
+- to be done: After last boot no sleep-mode should be happened
+- to be done: Disable repo(s) on a device (USB-stick)
 - Adding Surface kernel repo
 - Setting lock on future install/upgrade of the default openSUSE kernel
 - Install Surface kernel ... ofcourse
