@@ -1,54 +1,15 @@
-#!/bin/bash
-
-# Working on v0.1.1
-
-# Install Surface aware kernel on Tumbleweed on a Surface laptop
-# Kernel used from repo MadZero. Thanks !!
-
-clear -x
-echo "$(date '+%Y-%m-%d %H:%M:%S') Starting script: $0"; echo
-SECONDS=0
-
-# Running on supported os $NAME and $VERSION_ID?
-source /etc/os-release
-case $NAME in
-	"openSUSE Tumbleweed" )
-		[[ ! "$VERSION_ID" > "20251201" ]] && { echo "Script not designed/tested on $NAME version before 2025-12-01"; exit 99; }
-		;;
-	* )
-		echo "Script not designed/tested on $NAME"
-		exit 99
-		;;
-esac
-
-# root privileges?
-[[ $EUID -ne 0 ]] && { echo "This script requires root privileges"; exit 99; }
-
-# Site available?
-site="download.opensuse.org"
-ping -c1 "$site" > /dev/null 2>&1
-[ $? -gt 0 ] && { echo "Site $site not available"; exit 99; }
-
-# No sleep mode after last boot	
-[[ $(journalctl -b -gsleep -q) ]] && { echo "Laptop has slept after last reboot, reboot first"; exit 99; }
+# Install the surface kernel on top of a CLEAN install of Tumbleweed 
 
 if [ $(dmidecode -s system-family) == "Surface" ]; then
 
-	# Disable repo(s) on USB
-	echo "Disable repo(s) on USB"
-	zypper mr --disable $(zypper repos --uri | grep -e device | awk '{print $1}')
-
-	# Install Surface kernel on top of openSUSE Tumbleweed
+	# Install Surface kernel
 	
-	# Set install lock on standard kernel
-	echo "Surface detected, set lock on standard kernel-default*"
+	# Set lock on the standard kernel
+	echo "Surface detected, setting lock on the standard kernel-default*"
 	zypper al --type package --repo download.opensuse.org-oss --comment "Microsoft Surface laptop" kernel-default*
 
-	# Edit /etc/kernel/entry-token
-	sed -i 's/^\(opensuse-tumbleweed\)$/\surface-kernel/' /etc/kernel/entry-token
-	
-	# Add repo MadZero
-	zypper --non-interactive --gpg-auto-import-keys addrepo --no-gpgcheck --refresh -r https://download.opensuse.org/download/repositories/home:/MadZero:/Surface/openSUSE_Tumbleweed/home:MadZero:Surface.repo --priority 60
+	# add Repo MadZero
+	zypper --non-interactive --gpg-auto-import-keys addrepo --no-gpgcheck  --refresh -r https://download.opensuse.org/download/repositories/home:/MadZero:/Surface/openSUSE_Tumbleweed/home:MadZero:Surface.repo --priority 60
 	zypper refresh
 	
 	kernelMadZero=$(zypper lr | grep MadZero | cut -d'|' -f1 | xargs)
@@ -66,18 +27,13 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	echo
 
 	# Set default boot entry
-
-	# Look for unique signature of the Surface kernel
-	entrySubstring=$(zypper se --details --type package --repo $kernelMadZero --match-exact kernel-default | grep kernel-default | cut -d'|' -f4 | grep -o '[^.]*$')
-	# Look for the regarding entry file in /boot/efi/loader/entries
-	entryDefaultFile=$(ls /boot/efi/loader/entries -1S | grep $entrySubstring | tail -1)
-	bootctl set-default $entryDefaultFile
-
-	# Delete, if exists, default kernel.conf(s)
-    rm /boot/efi/loader/entries/opensuse-tumbleweed*
 	
-	echo
-	echo "$(date '+%Y-%m-%d %H:%M:%S') Script $0 finished (duration: $(TZ=UTC0 printf '%(%H:%M:%S)T\n' $SECONDS)), reboot needed"
+	# Isolate the Git-hash (for insiance 'g1533bda')
+	Git_Hash=$(rpm -q --qf "%{RELEASE}\n" kernel-default | grep -oE 'g[0-9a-f]+')
+	
+	# Search in bootctl list for the ID which contains these hash ánd '-1.conf'
+	Conf_File=$(bootctl --no-pager list | awk -v h="$Git_Hash" '/id:/ && $0 ~ h && /-1.conf/ {print $2; exit}')
+
+	sdbootutil set-default "$Conf_File"
 
 fi # if Surface
-
