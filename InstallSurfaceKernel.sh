@@ -8,15 +8,15 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	echo "Surface detected, setting lock on the standard kernel-default*"
 	zypper al --type package --repo download.opensuse.org-oss --comment "Microsoft Surface laptop" kernel-default*
 
-	# add Repo MadZero
-	zypper --non-interactive --gpg-auto-import-keys addrepo --no-gpgcheck  --refresh -r https://download.opensuse.org/download/repositories/home:/MadZero:/Surface/openSUSE_Tumbleweed/home:MadZero:Surface.repo --priority 60
+	# add Repo twaggs
+	zypper --non-interactive --gpg-auto-import-keys addrepo --no-gpgcheck  --refresh -r https://download.opensuse.org/repositories/home:/twaggs:/linux-surface/openSUSE_Tumbleweed/home:twaggs:linux-surface.repo --priority 60
 	zypper refresh
 	
-	kernelMadZero=$(zypper lr | grep MadZero | cut -d'|' -f1 | xargs)
+	kerneltwaggs=$(zypper lr | grep twaggs | cut -d'|' -f1 | xargs)
 
 	# Install Surface kernel
 	echo "Install Surface kernel ..."
-	zypper install --repo $kernelMadZero --force --no-confirm kernel-default
+	zypper install --repo $kerneltwaggs --force --no-confirm kernel-default
 	echo "Surface kernel installed"
 	echo
 
@@ -28,7 +28,7 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 
 	# Set default boot entry
 	
-	# Isolate the Git-hash (for instance 'g1533bda')
+	# Isolate the Git-hash (for instance 'g7e74cac')
 	Git_Hash=$(rpm -q --qf "%{RELEASE}\n" kernel-default | grep -oE 'g[0-9a-f]+')
 	
 	# Search in bootctl list for the ID which contains these hash ánd '-1.conf'
