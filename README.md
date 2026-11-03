@@ -1,6 +1,7 @@
 **This bash script installs a Surface kernel on top of a fresh openSUSE Tumbleweed installation on a Surface laptop.**
 
 For de Surface kernel, until autumn 2026, all credits to https://download.opensuse.org/download/repositories/home:/MadZero:
+
 For de Surface kernel, from autumn 2026, all credits to https://download.opensuse.org/download/repositories/home:/twaggs:
 
 ***All needed requirements, actions, cleanups and settings are included:***
