@@ -2,7 +2,6 @@
 
 For de Surface kernel, until autumn 2026, all credits to https://download.opensuse.org/download/repositories/home:/MadZero:
 
-
 For de Surface kernel, from autumn 2026, all credits to https://download.opensuse.org/download/repositories/home:/twaggs:
 
 ***All needed requirements, actions, cleanups and settings are included:***
