@@ -36,4 +36,36 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 
 	sdbootutil set-default "$Conf_File"
 
+	# Certificate Surface kernel has to be installed
+
+	# Location certificate file
+	mokFile="/etc/uefi/certs/CAE170D1.crt"
+
+	# Certificate file found?
+	if [ ! -f "$mokFile" ]; then
+		echo -e "\033[0;31mCertificate $mokFile not found.\033[0m"
+		echo -e "\033[0;31mBoot the Surface with Security set to None, and fix this issue.\033[0m"
+		echo -e "\033[0;31mCurrent state: $(mokutil --sb-state)\033[0m"
+	else
+		echo -e "\033[0;Find certificate: $mokFile\033[0m"
+
+		# Has the certificate already installed?
+		if mokutil --list-enrolled | grep -qi "twaggs1"; then
+			# Certificate founded
+			echo -e "\033[0;32mThe Surface-key is already active in the UEFI firmware. No actie needed!\033[0m"
+		else
+			# Install certificate 
+			mokutil --import "$mokFile" --root-pw
+			mokInstalled=true 
+			echo -e "\033[0;32mThe key has been prepared for the next reboot!\033[0m"
+			echo ""
+			echo -e "\033[0;33mSteps at the next reboot:\033[0m"
+			echo "1. Reboot the Surface."
+			echo "2. In the blue window (MokManager), choose: 'Enroll MOK'."
+			echo "3. Choose 'Continue' and then 'Yes'."
+			echo "4. Fill in the current Linux ROOT-password."
+			echo "5. Choose 'Reboot'."
+		fi
+	fi
+
 fi # if Surface
