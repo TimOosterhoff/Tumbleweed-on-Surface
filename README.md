@@ -21,7 +21,6 @@
 - Execute file with root permission: **./InstallSurfaceKernel.sh**
 
 ***Nice to haves***
-- MOK management, links to documentation
 - In case of btrfs: cleaning intermediate snapshots
 - Prevent or cleanup duplicates in GRUB
 - ... *(let me know)* ...
