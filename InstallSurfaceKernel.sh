@@ -50,7 +50,8 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 		echo -e "\033[0;31mBoot the Surface with Security set to None, and fix this issue.\033[0m"
 		echo -e "\033[0;31mCurrent state: $(mokutil --sb-state)\033[0m"
 	else
-		echo -e "\033[0;Find certificate: $mokFile\033[0m"
+		echo
+		echo -e "\033[0;32mFound certificate file: $mokFile\033[0m"
 
 		# Has the certificate already installed?
 		if mokutil --list-enrolled | grep -qi "twaggs1"; then
