@@ -12,6 +12,7 @@
 - Install Surface kernel ... ofcourse
 - Install Intel Precise Touch & Stylus daemon
 - Handles all the bootmenu stuff
+- Install Surface kernel MOK
 
 ***Installation and execution***
 - Download the file **InstallSurfaceKernel.sh**
