@@ -41,7 +41,6 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	# On a clean install of Tumbleweed there is no mokutil
 	zypper --quiet --non-interactive install mokutil
 
-
 	# Location certificate file
 	mokFile="/etc/uefi/certs/CAE170D1.crt"
 
