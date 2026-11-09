@@ -68,7 +68,7 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 				echo "[ACTION] Key is not enrolled yet. Initiating import using the root password..."
 				
 				# Staging automated import using the current root password
-				if mokutil --import "$KeyFile" --root-passwd; then
+				if mokutil --import "$KeyFile" --root-pw; then
 					echo -e "\033[0;32mThe key has been prepared for the next reboot.\033[0m"
 					echo ""
 					echo -e "\033[0;33mSteps at the next reboot:\033[0m"
