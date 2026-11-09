@@ -41,35 +41,72 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	# On a clean install of Tumbleweed there is no mokutil
 	zypper --quiet --non-interactive install mokutil
 
-	# Location certificate file
-	mokFile="/etc/uefi/certs/CAE170D1.crt"
-
-	# Certificate file found?
-	if [ ! -f "$mokFile" ]; then
-		echo -e "\033[0;31mCertificate $mokFile not found.\033[0m"
-		echo -e "\033[0;31mBoot the Surface with Security set to None, and fix this issue.\033[0m"
-		echo -e "\033[0;31mCurrent state: $(mokutil --sb-state)\033[0m"
+	# twaggs should have created this KeyFile
+	KeyFile="/etc/uefi/certs/CAE170D1.crt"
+		
+	# Verify that the key file actually exists
+	if [ ! -f "$KeyFile" ]; then
+		echo "Error: Key file '$KeyFile' not found."
+		Error=1
+		
 	else
-		echo
-		echo -e "\033[0;32mFound certificate file: $mokFile\033[0m"
 
-		# Has the certificate already installed?
-		if mokutil --list-enrolled | grep -qi "twaggs1"; then
-			# Certificate founded
-			echo -e "\033[0;32mThe Surface-key is already active in the UEFI firmware. No actie needed!\033[0m"
-		else
-			# Install certificate 
-			mokutil --import "$mokFile" --root-pw
-			mokInstalled=true 
-			echo -e "\033[0;32mThe key has been prepared for the next reboot!\033[0m"
-			echo ""
-			echo -e "\033[0;33mSteps at the next reboot:\033[0m"
-			echo "1. Reboot the Surface."
-			echo "2. In the blue window (MokManager), choose: 'Enroll MOK'."
-			echo "3. Choose 'Continue' and then 'Yes'."
-			echo "4. Fill in the current Linux ROOT-password."
-			echo "5. Choose 'Reboot'."
-		fi
+		echo "Checking the status of the Secure Boot key..."
+
+		# Force English locale output to guarantee predictable pattern matching
+		OUTPUT=$(LC_ALL=C mokutil --test-key "$KeyFile" 2>&1)
+		Status=$?
+
+		case $Status in
+			0)
+				# Situation A: Key is already stored manually in the UEFI MOK NVRAM list
+				echo "[OK] Key is already enrolled in the UEFI MOK list."
+				;;
+				
+			1)
+				# Situation B: Key is still unknown, enrollment is required
+				echo "[ACTION] Key is not enrolled yet. Initiating import using the root password..."
+				
+				# Staging automated import using the current root password
+				if mokutil --import "$KeyFile" --root-passwd; then
+					echo -e "\033[0;32mThe key has been prepared for the next reboot.\033[0m"
+					echo ""
+					echo -e "\033[0;33mSteps at the next reboot:\033[0m"
+					echo "1. Reboot the Surface."
+					echo "2. In the blue window (MokManager), choose: 'Enroll MOK'."
+					echo "3. Choose 'Continue' and then 'Yes'."
+					echo "4. Fill in the current Linux ROOT-password."
+					echo "5. Choose 'Reboot'."
+					echo
+				else
+					echo "The mokutil import command failed."
+					Error=1
+				fi
+				;;
+				
+			255)
+				# Situation C: Key is inherently trusted by the running kernel compilation
+				if echo "$OUTPUT" | grep -q "already in the built-in trusted keyring"; then
+					echo "Key is already in the built-in trusted keyring of the active kernel."
+					echo "No additional UEFI MOK enrollment is required for this Surface kernel."
+				else
+					echo "ERROR Critical mokutil error (code 255): $OUTPUT"
+					Error=255
+				fi
+				;;
+				
+			*)
+				# Unexpected exit code (e.g., system booted via Legacy/CSM instead of UEFI)
+				echo "ERROR Unexpected mokutil status (code $Status): $OUTPUT"
+				Error=1
+				;;
+		esac
+	
+	fi
+	
+	if [[ -n "$Error" ]]; then
+		echo -e "\033[0;31mInstalling of the KeyFile to MOK failed\033[0m"
+		echo
 	fi
 
 fi # if Surface
