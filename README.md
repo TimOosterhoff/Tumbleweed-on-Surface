@@ -22,7 +22,5 @@
 - Execute file with root permission: **./InstallSurfaceKernel.sh**
 
 ***Nice to haves***
-- In case of btrfs: cleaning intermediate snapshots
-- Prevent or cleanup duplicates in bootmenu
 - ... *(let me know)* ...
 
