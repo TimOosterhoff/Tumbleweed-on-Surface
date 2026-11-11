@@ -105,7 +105,8 @@ if [ $(dmidecode -s system-family) == "Surface" ]; then
 	fi
 	
 	if [[ -n "$Error" ]]; then
-		echo -e "\033[0;31mInstalling of the KeyFile to MOK failed\033[0m"
+		echo -e "\033[0;31mFirst phase of installing the Certificate to UEFI MOK NVRAM failed\033[0m"
+		echo -e "\033[0;31mWant to use your laptop anyway? Then set Security to None in the BIOS\033[0m"
 		echo
 	fi
 
